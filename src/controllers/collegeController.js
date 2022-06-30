@@ -25,9 +25,9 @@ const getCollege = async function (req, res) {
     if (!thisCollege) return res.status(404).send({ status: false, msg: `No colleges with name ${collegeName} found ` })
 
     let internsofCollege = await internModel.find({ isDeleted: false, collegeId: thisCollege._id }).select({ name: 1, email: 1, mobile: 1 });
-
-    if (internsofCollege.length == 0) return res.status(404).send({ status: false, msg: `No interns found under college name ${collegeName}` })
-    let interns = [];
+    let interns = []; 
+    if (internsofCollege.length == 0)// return res.status(404).send({ status: false, msg: `No interns found under college name ${collegeName}` })
+     interns = `No interns found under college name ${collegeName}`
     
     for (let i = 0; i < internsofCollege.length; i++) {
       interns.push(internsofCollege[i]);

@@ -1,6 +1,6 @@
 const internModel= require("../models/internModel")
 const collegeModel=require('../models/collegeModel')
-
+// Creating Intern Document
 const createIntern= async function(req,res){
     try{
 

@@ -125,3 +125,45 @@ Refer below sample
   }
 }
 ```
+
+let result = await collegeModel.aggregate([
+      {
+        $lookup: {
+          from: "interns",
+          localField: "_id",
+          foreignField: "collegeId",
+          as: "interns",
+        },
+      },
+      {
+        $unwind: "$interns",
+      },
+      {
+        $match: {
+          name: collegeName,
+          isDeleted: false,
+          "interns.isDeleted": false,
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          name: { $first: "$name" },
+          fullName: { $first: "$fullName" },
+          logoLink: { $first: "$logoLink" },
+          interns: { $push: "$interns" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: 1,
+          fullName: 1,
+          logoLink: 1,
+          "interns._id": 1,
+          "interns.name": 1,
+          "interns.email": 1,
+          "interns.mobile": 1,
+        },
+      },
+    ]);

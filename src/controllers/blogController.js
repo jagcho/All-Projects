@@ -217,16 +217,16 @@ const deleteblog2 = async function (req, res) {
   try {
     let authIdtoken = req.authorId
     let query = req.query
-    let getdata =await BlogModel.findOne(query) //first filter conditions according to query.
-    if(!getdata){
-      return res.status(404).send({status:false,msg:"no such blog exist"}) // if no such conditions much validation for empty array
-    }
+    let getdata =await BlogModel.find(query) //first filter conditions according to query.
     console.log(getdata)
-    if(getdata.isDeleted==true){
-      return res.status(400).send({status:false,msg:"we cannot update deleted blog"}) // if conditions mach and blog deleted,validation.
+    if(getdata.length==0){
+      return res.status(404).send({status:false,msg:"no such blog exist"}) // if no such conditions match validation for empty array
     }
-
-    let updatedBlog = await BlogModel.updateMany({$and:[{authorId:authIdtoken},query]},{$set:{isDeleted:true,deletedAt:new Date()}},{new:true})
+  let filter = getdata.map(blog=>{
+    if(blog.authorId.toString()=== authIdtoken && blog.isDeleted===false)
+    return blog._id
+  })
+    let updatedBlog = await BlogModel.updateMany({_id:{$in:filter}},{$set:{isDeleted:true,deletedAt:new Date()}},{new:true})
 
     res.status(200).send({ status: true, data: updatedBlog,msg:"blog deleted"});
   }

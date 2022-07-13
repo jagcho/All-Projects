@@ -40,17 +40,13 @@ const getBookbyQuerry = async function (req, res) {
         if (category) {
            
             filter.category = category
-            // let Category = await bookModel.find({ category: category })
-            // if (Category.length == 0)
-                // return res.status(404).send({ status: false, message: "this category not found" })
+
         }
 
         //<---------------check subcatergory present and (if)proper format or not--------------->//
         if (subcategory) {
             filter.subcategory = subcategory
-            // let subCategory = await bookModel.find({ subcategory: subcategory })
-            // if (subCategory.length == 0)
-                // return res.status(404).send({ status: false, message: "this subcategory not found" })
+
         }
         //<---------------check userId present and (if)proper format or not----------------->//
         if (userId) {
@@ -188,7 +184,7 @@ const updateBook = async function (req, res) {
         }
 
         //updateBook
-        let updatedata = await bookModel.findOneAndUpdate({ _id: id.bookId }, details, { new: true }).select({ __v: 0 });
+        let updatedata = await bookModel.findOneAndUpdate({ _id:bookId }, details, { new: true }).select({ __v: 0 });
 
         res.status(200).send({ status: true, message: 'Success', data: updatedata });
 

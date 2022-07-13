@@ -37,7 +37,7 @@ const bookvalidation = async function (req, res, next) {
         //<=====Validation=====>        
         //validating title is entered and valid
         if (!isValidData(title))
-            return res.status(400).send({ status: false, message: "please enter title key or valid tilte" })
+            return res.status(400).send({ status: false, message: "please enter title key " })
         if (!/^([a-zA-Z 0-9]+)$/.test(title.trim())) {
             return res.status(400).send({ status: false, message: "enter valid title in alphabets only " });
         }
@@ -45,7 +45,7 @@ const bookvalidation = async function (req, res, next) {
         //validating excerpt is entered and valid
         if (!isValidData(excerpt))
             return res.status(400).send({ status: false, message: "please enter excerpt " })
-        if (typeof excerpt!=="string" ||!/^([a-zA-Z_',.()!\S ]+)$/.test(data.excerpt.trim())) {
+        if (typeof excerpt!=="string" ||!/^([a-zA-Z_',.()!]+)$/.test(data.excerpt.trim())) {
             return res.status(400).send({ status: false, message: "enter valid excerpt in alphabets only" });
         }
 

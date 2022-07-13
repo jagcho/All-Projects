@@ -1,4 +1,4 @@
-const { isValidRequestBody, isValidObjectId, isValidData } = require("../validator/validation")
+const { isValidRequestBody, isValidObjectId, isValidData } = require("./validation")
 
 
 const ratingCheck = function (value) {
@@ -21,8 +21,13 @@ const reviewCheck = function (req, res, next) {
 
       return res.status(400).send({ status: false, message: "please give review and details" })
 
+   //============================bookId validation==========================================//
+   if (!isValidObjectId(bookId)) {
 
-   const { reviewedBy, rating, review, reviewedAt, isDeleted } = requestBody
+      return res.status(400).send({ status: false, message: "not a valid bookId" })
+   }
+
+   let { reviewedBy, rating, review, reviewedAt, isDeleted } = requestBody
 
    // =========check wheather mandatory  fields are present or not=======================//
 
@@ -34,12 +39,12 @@ const reviewCheck = function (req, res, next) {
    // if (!reviewedAt) {
    //     missdata = missdata + " " + "reviewedAt"
    //  }
-   let bookID = bookId.trim()
+   // let bookID = bookId.trim()
 
-   if (bookID.length == 0) {
+   // if (bookID.length == 0) {
 
-      missdata = missdata + "bookId"
-   }
+   //    missdata = missdata + "bookId"
+   // }
 
    if (!rating) {
 
@@ -62,55 +67,31 @@ const reviewCheck = function (req, res, next) {
        
       return res.status(400).send({status:false,message:"rating should be between 1 & 5"})
    //==================reviewat validation===========================//
-   if (!reviewedAt) {
-      return res.status(400).send({ status: false, message: "reviewedAt is required" })
-  }
-
-
-
+   if (reviewedAt) {
+      
       if (!/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(reviewedAt))
 
           return res.status(400).send({ status: false, message: "date format should be in YYYY-MM-DD" })
-
+   }
           
 
-  
-  
 
-   // if (reviewedAt) {
-
-   //    let dateCheck = new Date(reviewedAt).getTime()
-
-   //    console.log(dateCheck)
-
-   //    if (isNaN(dateCheck)) {
-
-   //       return res.status(400).send({ status: false, message: "reviewAt is not in a proper format " })
-
-   //    }
-   // }
-   // ===========================review validation=============================================//
-   if (review) {
-
-      if (!isValidData(review))
-
-         return res.status(400).send({ status: false, message: "please give review properly" })
-
-   }
    // ==============================reviewBy validation========================================//
 
    if (reviewedBy) {
+      if (typeof reviewedBy !=='string') return res.status(400).send({status:false,message:"give  reviewedBy in string only"})
 
       if (!isValidData(reviewedBy))
 
          return res.status(400).send({ status: false, message: "give proper name as reviewedBy" })
 
    }
-   //============================bookId validation==========================================//
-   if (!isValidObjectId(bookId)) {
+      // ===========================review validation=============================================//
+      if (review) {
+         if (typeof review !=='string')  return res.status(400).send({status:false,message:"give  review in string only"})
+         if (!isValidData(review))  return res.status(400).send({ status: false, message: "please give review properly" })
+      }
 
-      return res.status(400).send({ status: false, message: "not a valid bookId" })
-   }
 
    if (isDeleted) {
 

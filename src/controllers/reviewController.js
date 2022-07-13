@@ -13,17 +13,15 @@ const createReview = async function (req, res) {
         let bookCheck = await bookModel.findOne({ _id: book.bookId, isDeleted: false })
         if (!bookCheck)
             return res.status(404).send({ status: false, message: "book not found" })
-        // if (!reviewedBy) {
-        //     reviewedBy = "guest"
-        // }
+  
        
         let bookDetails = await bookModel.findByIdAndUpdate({ _id: book.bookId }, { $inc: { reviews: 1 } }, { new: true }).select({ __v: 0 })
         // console.log(bookDetails)
         let createReview = await reviewModel.create(requestBody)
 
-        const reviews = await reviewModel.find({ bookId: book.bookId, isDeleted: false }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 });
+        // const reviews = await reviewModel.find({ bookId: book.bookId, isDeleted: false }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 });
 
-        let response = { ...bookDetails.toObject(), reviewsData: reviews }
+        let response = { ...bookDetails.toObject(), reviewsData: createReview }
 
         res.status(201).send({ status: true, message: "Success", data: response })
     }
@@ -121,8 +119,8 @@ const updateReview = async function (req, res) {
         // if(updatedReview. )
         //     error message for update operation failed
 
-        const reviews = await reviewModel.find({ bookId: bookId, isDeleted: false }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 });
-        reqBook._doc.reviewsData = reviews
+      //  const reviews = await reviewModel.find({ bookId: bookId, isDeleted: false }).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 });
+        reqBook._doc.reviewsData = updatedReview
         res.status(200).send({ status: true, message: 'Success', data: reqBook })
 
     } catch (err) {

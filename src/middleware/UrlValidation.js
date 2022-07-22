@@ -5,7 +5,7 @@ const isValidData = function (value) {
     return true;
 }
 function isUrl(x) {
-    const regEx = /^\s*http[s]?:\/\/([w]{3}\.)?[a-zA-Z0-9]+\.[a-z]{2,3}(\.[a-z]{2})?(\/[\w\-!:@#$%^&*()+=?\.]*)*\s*$/;
+    const regEx = /^\s*http[s]?:\/\/([a-z]{2,3}\.)?[a-zA-Z0-9]+\.[a-z]{2,3}(\.[a-z]{2})?(\/[\w\-!:@#$%^&*()+=?\.]*)*\s*$/;
     return regEx.test(x)
 }
 const isValidRequestBody = function (requestBody) {
